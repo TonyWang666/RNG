@@ -55,9 +55,92 @@ public class Solution {
   }
 }
 
+//TC: O(2^n)
+//SC: O(n)
+
+
+
+
+
+Find All Subsets II of from a string containing dupulicated characters with size K:
+public class Solution {
+  public List<String> subSetsIIOfSizeK(String set, int k) {
+    List<String> res = new ArrayList<>();
+    if(set == null || (set.length() < k)){
+      return res;
+    }
+    char[] target = set.toCharArray();
+    Arrays.sort(target);
+    helper(0, target, k, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int index, char[] target, int k, StringBuilder sb, List<String> res){
+    if(sb.length() == k){
+      res.add(sb.toString());
+      return;
+    }
+    if(sb.length() > k || index == target.length){
+      return;
+    }
+    helper(index + 1, target, k, sb.append(target[index]), res);
+    sb.deleteCharAt(sb.length() - 1);
+    while(index < target.length - 1 && target[index] == target[index + 1]){
+      index++;
+    }
+    helper(index + 1, target, k, sb, res);
+  }
+}
 
 //TC: O(2^n)
 //SC: O(n)
 
 
+
+
+
+Find All Valid Permutations Of Parentheses given 3 integer as number of '(' or ')', '<' or '>', '{' or '}'
+public class Solution {
+  private final char[] dict = {'(', ')', '<', '>', '{', '}'};
+  public List<String> validParentheses(int l, int m, int n) {
+    List<String> res = new ArrayList<>();
+    int[] ele = new int[]{l, l, m, m, n, n};
+    Deque<Integer> stack = new ArrayDeque<>();
+    helper(ele, 2 * (l + m + n), stack, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int[] ele, int target, Deque<Integer> stack, StringBuilder sb, List<String> res){
+    if(sb.length() == target){
+      res.add(sb.toString());
+      return;
+    }
+    for(int i = 0; i < ele.length; i++){
+      if(i % 2 == 0){
+        if(ele[i] > 0){
+          sb.append(dict[i]);
+          ele[i]--;
+          stack.offerFirst(i);
+          helper(ele, target, stack, sb, res);
+          ele[i]++;
+          sb.deleteCharAt(sb.length() - 1);
+          stack.pollFirst();
+        }
+      }
+      else{
+        if(ele[i] > 0 && !stack.isEmpty() && stack.peek() == i - 1){
+          sb.append(dict[i]);
+          ele[i]--;
+          stack.pollFirst();
+          helper(ele, target, stack, sb, res);
+          ele[i]++;
+          stack.offerFirst(i - 1);
+          sb.deleteCharAt(sb.length() - 1);
+        }
+      }
+    }
+  }
+}
+
+//k is sum of all symbol
+//TC: O(2^2k)
+//SC: O(2k)
 
