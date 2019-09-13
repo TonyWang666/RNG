@@ -1,0 +1,63 @@
+Find All Subsets from a string containing duplicated character:
+public class Solution {
+  public List<String> subSets(String set) {
+    List<String> res = new ArrayList<>();
+    if(set == null){
+      return res;
+    }
+    char[] target = set.toCharArray();
+    Arrays.sort(target);
+    helper(0, target, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int index, char[] set, StringBuilder sb, List<String> res){
+    if(index == set.length){
+      res.add(sb.toString());
+      return;
+    }
+    helper(index + 1, set, sb.append(set[index]), res);
+    sb.deleteCharAt(sb.length() - 1);
+    while(index < set.length - 1 && set[index] == set[index + 1]){
+      index++;
+    }
+    helper(index + 1, set, sb, res);
+  }
+}
+
+//TC: O(2^n)
+//SC: O(n)
+
+
+
+
+
+All Subsets of Size K given a string:
+public class Solution {
+  public List<String> subSetsOfSizeK(String set, int k) {
+    List<String> res = new ArrayList<>();
+    if(set == null){
+      return res;
+    }
+    helper(0, set, k, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int index, String set, int k, StringBuilder sb, List<String> res){
+    if(sb.length() == k){
+      res.add(sb.toString());
+      return;
+    }
+    if(sb.length() > k || index == set.length()){
+      return;
+    }
+    helper(index + 1, set, k, sb.append(set.charAt(index)), res);
+    sb.deleteCharAt(sb.length() - 1);
+    helper(index + 1, set, k, sb, res);
+  }
+}
+
+
+//TC: O(2^n)
+//SC: O(n)
+
+
+
