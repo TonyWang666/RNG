@@ -1,0 +1,31 @@
+Find All Subsets II of from a string containing dupulicated characters with size K:
+public class Solution {
+  public List<String> subSetsIIOfSizeK(String set, int k) {
+    List<String> res = new ArrayList<>();
+    if(set == null || (set.length() < k)){
+      return res;
+    }
+    char[] target = set.toCharArray();
+    Arrays.sort(target);
+    helper(0, target, k, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int index, char[] target, int k, StringBuilder sb, List<String> res){
+    if(sb.length() == k){
+      res.add(sb.toString());
+      return;
+    }
+    if(sb.length() > k || index == target.length){
+      return;
+    }
+    helper(index + 1, target, k, sb.append(target[index]), res);
+    sb.deleteCharAt(sb.length() - 1);
+    while(index < target.length - 1 && target[index] == target[index + 1]){
+      index++;
+    }
+    helper(index + 1, target, k, sb, res);
+  }
+}
+
+//TC: O(2^n)
+//SC: O(n)

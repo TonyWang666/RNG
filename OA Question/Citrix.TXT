@@ -1,0 +1,28 @@
+1. Given a series prices of products{1, 4, 2, 6}. First product won't get discount, the rest product will get discount with the minimum orginal prices of products before.
+Solution: BruteForce
+	Go through array by keeping an minimum value.
+
+2. Given a string. Shift left with integer x and shift right with integer y
+Solution: I LOVE YAHOO. 
+	reverse all
+	reverse firstPart
+	reverse secondPart
+
+3. Given an integer array with a threshhold k, find all combination of 3 numbers that sum <= k
+Solution: 3 Sum
+	sort array with nlogn
+	for loop each element as i: 
+		let j = i + 1
+		let k = size - 1
+		while(j < k):
+			if sum of 3 <= target:
+				res.add();
+tips: remember to deal with the duplicated situation
+TC: O(n^2)
+SC: O(1)
+
+4. Given a 2-D array, go from [0][0] to [n-1][n-1] and back. Collect as many diamond as you can. -1 for Wall, 0 for road, 1 for diamond on the road
+Solution: Dynamic Programming
+	Using dynamic Programming to go to [n-1][n-1] by implementing diamond we got
+	back-tracking the maximum path and set the road on the path to 0
+	Using same dynamic Programming algorithm from [0][0] to [n-1][n-1] to get maximum diamond collected on back-path. 

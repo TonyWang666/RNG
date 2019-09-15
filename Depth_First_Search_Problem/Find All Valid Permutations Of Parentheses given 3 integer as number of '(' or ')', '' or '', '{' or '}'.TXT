@@ -1,0 +1,45 @@
+Find All Valid Permutations Of Parentheses given 3 integer as number of '(' or ')', '<' or '>', '{' or '}'
+public class Solution {
+  private final char[] dict = {'(', ')', '<', '>', '{', '}'};
+  public List<String> validParentheses(int l, int m, int n) {
+    List<String> res = new ArrayList<>();
+    int[] ele = new int[]{l, l, m, m, n, n};
+    Deque<Integer> stack = new ArrayDeque<>();
+    helper(ele, 2 * (l + m + n), stack, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int[] ele, int target, Deque<Integer> stack, StringBuilder sb, List<String> res){
+    if(sb.length() == target){
+      res.add(sb.toString());
+      return;
+    }
+    for(int i = 0; i < ele.length; i++){
+      if(i % 2 == 0){
+        if(ele[i] > 0){
+          sb.append(dict[i]);
+          ele[i]--;
+          stack.offerFirst(i);
+          helper(ele, target, stack, sb, res);
+          ele[i]++;
+          sb.deleteCharAt(sb.length() - 1);
+          stack.pollFirst();
+        }
+      }
+      else{
+        if(ele[i] > 0 && !stack.isEmpty() && stack.peek() == i - 1){
+          sb.append(dict[i]);
+          ele[i]--;
+          stack.pollFirst();
+          helper(ele, target, stack, sb, res);
+          ele[i]++;
+          stack.offerFirst(i - 1);
+          sb.deleteCharAt(sb.length() - 1);
+        }
+      }
+    }
+  }
+}
+
+//k is sum of all symbol
+//TC: O(2^2k)
+//SC: O(2k)

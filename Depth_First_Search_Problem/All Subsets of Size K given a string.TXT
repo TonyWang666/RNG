@@ -1,0 +1,26 @@
+All Subsets of Size K given a string:
+public class Solution {
+  public List<String> subSetsOfSizeK(String set, int k) {
+    List<String> res = new ArrayList<>();
+    if(set == null){
+      return res;
+    }
+    helper(0, set, k, new StringBuilder(), res);
+    return res;
+  }
+  public void helper(int index, String set, int k, StringBuilder sb, List<String> res){
+    if(sb.length() == k){
+      res.add(sb.toString());
+      return;
+    }
+    if(sb.length() > k || index == set.length()){
+      return;
+    }
+    helper(index + 1, set, k, sb.append(set.charAt(index)), res);
+    sb.deleteCharAt(sb.length() - 1);
+    helper(index + 1, set, k, sb, res);
+  }
+}
+
+//TC: O(2^n)
+//SC: O(n)
