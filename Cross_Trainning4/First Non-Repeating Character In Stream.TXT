@@ -1,0 +1,68 @@
+public class Solution {
+  private Map<Character, Node> hashMap;
+  private Node head;
+  private Node tail;
+  private static class Node{
+    Character key;
+    Node prev;
+    Node next;
+    public Node(Character key){
+      this.key = key;
+    }
+  }
+  public Solution() {
+    hashMap = new HashMap<>();
+  }
+  
+  //if hashMap not contains target:
+  //  updateHashMap
+  //  insert tail
+  //else if contains and value is not null:
+  //  delete the node from LinkedList
+  //  update hashMap with null for the key
+  //(if contains and equals null: ==> do nothing;
+  //return head of linkedList;
+  public void read(char ch) {
+    Node n = hashMap.get(ch);
+    if(!hashMap.containsKey(ch)){
+      Node newNode = new Node(ch);
+      insertTail(newNode);
+      hashMap.put(ch, newNode);
+    }
+    else if(n != null){
+      remove(n);
+      hashMap.put(ch, null);
+    }
+  }
+  public Node insertTail(Node n){
+    if(head == null){
+      head = tail = n;
+    } else {
+      tail.next = n;
+      n.prev = tail;
+      tail = tail.next;
+      tail.next = null;
+    }
+    return n;
+  }
+  public Node remove(Node n){
+    if(n.prev != null){
+      n.prev.next = n.next;
+    }
+    if(n.next != null){
+      n.next.prev = n.prev;
+    }
+    if(n == head){
+      head = head.next;
+    }
+    if(n == tail){
+      tail = tail.prev;
+    }
+    n.prev = n.next = null;
+    return n;
+  }
+  
+  public Character firstNonRepeating() {
+    return head == null ? null : head.key;
+  }
+}

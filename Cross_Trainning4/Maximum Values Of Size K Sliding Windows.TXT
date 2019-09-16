@@ -1,0 +1,22 @@
+Given an integer array A and a sliding window of size K, find the maximum value of each window as it slides from left to right.
+public class Solution {
+  public List<Integer> maxWindows(int[] array, int k) {
+    List<Integer> res = new ArrayList<>();
+    Deque<Integer> deque = new ArrayDeque<>();
+    for(int i = 0; i < array.length; i++){
+      while(!deque.isEmpty() && array[deque.peekLast()] <= array[i]){
+        deque.pollLast();
+      }
+      deque.offerLast(i);
+      if(!deque.isEmpty() && deque.peekFirst() <= i - k){
+        deque.pollFirst();
+      }
+      if(i >= k - 1){
+        res.add(array[deque.peekFirst()]);
+      }
+    }
+    return res;
+  }
+}
+//TC: O(n) all nodes go into deque once and go out once
+//SC: O(n) maximumn space required for stack is O(n)

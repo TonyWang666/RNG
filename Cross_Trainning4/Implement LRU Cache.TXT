@@ -1,0 +1,97 @@
+public class Solution<K, V> {
+  // limit is the max capacity of the cache
+  private final int limit;
+  private int count = 0;
+  private Node<K, V> head = null; //recent used node
+  private Node<K, V> tail = null; //least recent used node
+  private Map<K, Node<K, V>> hashMap;
+  static class Node<K, V>{
+    K key;
+    V value;
+    Node<K, V> last;
+    Node<K, V> next;
+    public Node(K key, V value){
+      this.key = key;
+      this.value = value;
+      last = null;
+      next = null;
+    }
+  }
+  public Solution(int limit) {
+    hashMap = new HashMap<>();
+    this.limit = limit;
+  }
+  //东西在HashMap里面你就不需要担心size超标
+  //东西不在里面你才要担心size超标
+  //if in hashMap:
+  //  remove from linkedList
+  //  create new node
+  //  append to head of linkedList
+  //  update hashMap
+  //if not in hashMap and size == limit:
+  //  remove tail
+  //  create new node
+  //  append head of linkedList
+  //  update hashMap
+  //if in hashMap and size < limit:
+  //  create new node
+  //  append head of linkedList
+  //  update hashMap
+  //  count++;
+  public void set(K key, V value) {
+    Node<K, V> n = hashMap.get(key);
+    Node<K, V> newNode = new Node<K, V>(key, value);
+    if(n != null){ //in hashMap
+      remove(n);
+      append(newNode);
+    }
+    else if(count == limit){ //not in hashMap and size == limit
+      remove(tail);
+      append(newNode);
+    }
+    else{ //not in hashMap and size < limit
+      append(newNode);
+      count++;
+    }
+  }
+  public void append(Node<K, V> node){
+    hashMap.put(node.key, node);
+    if(head == null){
+      head = node;
+      tail = node;
+    } else {
+      head.last = node;
+      node.next = head;
+      head = node;
+    }
+  }
+  //use key to get 
+  public Node<K, V> remove(Node<K, V> node){
+    hashMap.remove(node.key);
+    if(node.last != null){
+      node.last.next = node.next;
+    }
+    if(node.next != null){
+      node.next.last = node.last; 
+    }
+    if(node == head){
+      head = head.next;
+    }
+    if(node == tail){
+      tail = tail.last;
+    }
+    node.last = node.next = null;
+    return node;
+  }
+
+  public V get(K key) {
+    Node<K, V> n = hashMap.get(key);
+    if(n == null){ 
+      return null;
+    } else {
+      remove(n);
+      append(n);
+      return n.value;
+    }
+  }
+}

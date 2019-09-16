@@ -1,0 +1,22 @@
+Given an unsorted array, find the length of the longest subarray in which the numbers are in ascending order.
+//case1: if last one is larger or equal, then cur = 1;
+//case2: if last one is smaller, then cur++;
+public class Solution {
+  public int longest(int[] array) {
+    if(array.length <= 1){
+      return array.length;
+    }
+    int cur = 1, max = 1;
+    for(int i = 1; i < array.length; i++){
+      if(array[i - 1] >= array[i]){
+        cur = 1;
+      } else {
+        cur++;
+        max = Math.max(cur, max);
+      }
+    }
+    return max;  
+  }
+}
+//TC: O(n)
+//SC: O(1)

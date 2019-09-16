@@ -1,0 +1,47 @@
+Given an integer array of length L, find all numbers that occur more than 1/K * L times if any exist.
+public class Solution {
+  public List<Integer> majority(int[] array, int k) {
+    List<Integer> res = new ArrayList<>();
+    int[] arr = new int[k - 1];
+    int[] count = new int[k - 1];
+    int size = array.length;
+    for(int i = 0; i < size; i++){
+      boolean flag = false;
+      for(int j = 0; j < arr.length; j++){
+        if(count[j] == 0 || arr[j] == array[i]){
+          arr[j] = array[i];
+          count[j]++;
+          flag = true;
+          break;
+        }
+      }
+      if(!flag){
+        minusAll(count);
+      }
+    }
+    for(int i = 0; i < count.length; i++){
+      if(count[i] != 0 && count(arr[i], array) > size/k){
+        res.add(arr[i]);
+      }
+    }
+    return res;
+  }
+  public void minusAll(int[] count){
+    for(int i = 0; i < count.length; i++){
+      if(count[i] > 0){
+        count[i]--;
+      }
+    }
+  }
+  public int count(int target, int[] array){
+    int count = 0;
+    for(int i = 0; i < array.length; i++){
+      if(target == array[i]){
+        count++;
+      }
+    }
+    return count;
+  }
+}
+//O(n^2)
+//O(n)

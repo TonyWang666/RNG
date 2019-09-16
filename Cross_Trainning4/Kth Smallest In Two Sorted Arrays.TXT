@@ -1,0 +1,28 @@
+public class Solution {
+  public int kth(int[] a, int[] b, int k) {
+    return helper(0, 0, a, b, k);
+  }
+  public int helper(int aLeft, int bLeft, int[] a, int[] b, int k){ //k is the kth smallest element to find in rest elements 
+    if(aLeft >= a.length){
+      return b[bLeft + k - 1];
+    }
+    if(bLeft >= b.length){
+      return a[aLeft + k - 1];
+    }
+    if(k == 1){
+      return Math.min(a[aLeft], b[bLeft]);
+    }
+    int aMid = aLeft + k/2 - 1;
+    int bMid = bLeft + k/2 - 1;
+    int aVal = aMid >= a.length ? Integer.MAX_VALUE : a[aMid];
+    int bVal = bMid >= b.length ? Integer.MAX_VALUE : b[bMid];
+    if(aVal < bVal){
+      return helper(aMid + 1, bLeft, a, b, k - k/2);
+    } else {
+      return helper(aLeft, bMid + 1, a, b, k - k/2);
+    }
+  }
+}
+//TC: log k
+//SC: log k
+

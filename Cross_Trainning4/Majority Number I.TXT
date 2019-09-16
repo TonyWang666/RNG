@@ -1,0 +1,19 @@
+Given an integer array of length L, find the number that occurs more than 0.5 * L times.
+public class Solution {
+  public int majority(int[] array) {
+    int count = 0, cur = 0;
+    for(int i : array){
+      if(count == 0){
+        cur = i;
+        count++;
+      } else if(i != cur){
+        count--;
+      } else {
+        count++;
+      }
+    }
+    return cur;
+  }
+}
+//TC: O(n)
+//SC: O(1)
