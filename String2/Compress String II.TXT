@@ -1,0 +1,55 @@
+public class Solution {
+  public String compress(String input) {
+    if(input.length() <= 1){
+      return input;
+    }
+    char[] array = input.toCharArray();
+    int slow = 0, unique = 0;
+    //first step
+    for(int fast = 0; fast < array.length; fast++){
+      int count = 1;
+      while(fast + 1 < array.length && array[fast] == array[fast + 1]){
+        fast++;
+        count++;
+      }
+      if(count == 1){
+        array[slow++] = array[fast];
+        unique++;
+      } else {
+        array[slow++] = array[fast];
+        slow = copyDigit(array, slow, count);
+      }
+    }
+    //second step
+    char[] res = new char[slow + unique];
+    int resPtr = res.length - 1;
+    slow -= 1;
+    while(slow >= 0){
+      if(array[slow] >= 'a' && array[slow] <= 'z'){
+        res[resPtr--] = '1';
+        res[resPtr--] = array[slow--];
+      } else {
+        while(array[slow] >= '0' && array[slow] <= '9'){
+          res[resPtr--] = array[slow--];          
+        }
+        res[resPtr--] = array[slow--];
+      }
+    }
+    return new String(res);
+  }
+  public int copyDigit(char[] array, int slow, int count){
+    int tempCount = count, len = 0;
+    while(tempCount > 0){
+      tempCount /= 10;
+      len++;
+    }
+    for(int i = slow + len - 1; i >= slow; i--){
+      array[i] = (char)((count % 10) + '0');
+      count /= 10;
+    }
+    return slow + len;
+  }
+}
+
+// TC: O(n)
+// SC: O(1)

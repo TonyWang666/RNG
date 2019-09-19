@@ -1,0 +1,31 @@
+Given a string, remove all leading/trailing/duplicated empty spaces.
+public class Solution {
+  public String removeSpaces(String input) {
+    if(input.length() == 0){
+      return input;
+    }
+    char[] array = input.toCharArray();
+    int fast = 0, slow = 0;
+    while(fast < array.length){
+      if(array[fast] != ' '){
+        array[slow++] = array[fast++];
+      }
+      else if(fast == 0){
+        fast++;
+      } 
+      else if(array[fast - 1] == ' '){
+        fast++;
+      }
+      else{ //valid space
+        array[slow++] = array[fast++];
+      }
+    }
+    if(slow != 0 && array[slow - 1] == ' '){
+      slow--;
+    }
+    return new String(array, 0, slow);
+  }
+}
+
+// TC: O(n)
+// SC: O(1)

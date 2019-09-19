@@ -1,0 +1,19 @@
+public class Solution {
+  public String remove(String input, String t) {
+    Set<Character> hashSet = new HashSet<>();
+    for(int i = 0; i < t.length(); i++){
+      hashSet.add(t.charAt(i));
+    }
+    char[] res = input.toCharArray();
+    int i = 0;
+    for(int j = 0; j < res.length; j++){
+      if(!hashSet.contains(input.charAt(j))){
+        res[i++] = input.charAt(j);
+      } 
+    }
+    return new String(res, 0, i);
+  }
+}
+
+// TC: O(n)
+// SC: O(1)

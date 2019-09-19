@@ -1,0 +1,30 @@
+public class Solution {
+  public String rightShift(String input, int n) {
+    if(input.length() <= 1){
+      return input;
+    }
+    n = n % input.length();
+    char[] res = input.toCharArray();
+    reverse(0, res.length - 1, res);
+    reverse(0, n - 1, res);
+    reverse(n, res.length - 1, res);
+    return new String(res);
+  }
+  public void reverse(int i, int j, char[] array){
+    while(i < j){
+      char temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+      i++;
+      j--;
+    }
+  }
+}
+
+// TC: O(n)
+// SC: O(1)
+
+// a b c d
+// d a b c
+// reverse(0, num - 1)
+// reverse(num, size -1)

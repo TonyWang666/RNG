@@ -1,0 +1,32 @@
+Given a string with possible duplicate characters, return a list with all permutations of the characters.
+public class Solution {
+  public List<String> permutations(String set) {
+    List<String> res = new ArrayList<>();
+    char[] arr = set.toCharArray();
+    helper(0, arr, res);
+    return res;
+  }
+  public void helper(int index, char[] arr, List<String> res){
+    if(index == arr.length){
+      res.add(new String(arr));
+      return;
+    }
+    Set<Character> set = new HashSet<>();
+    for(int i = index; i < arr.length; i++){
+      if(!set.contains(arr[i])){
+        set.add(arr[i]);
+        swap(index, i, arr);
+        helper(index + 1, arr, res);
+        swap(index, i, arr);
+      }
+    }
+  }
+  public void swap(int i, int j, char[] arr){
+    char temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+}
+
+// TC: O(n!)
+// SC: O(n^2)

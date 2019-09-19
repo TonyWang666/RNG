@@ -1,0 +1,30 @@
+Given an array of balls, where the color of the balls can only be Red, Green or Blue, sort the balls such that all the Red balls are grouped on the left side, all the Green balls are grouped in the middle and all the Blue balls are grouped on the right side. (Red is denoted by -1, Green is denoted by 0, and Blue is denoted by 1).
+public class Solution {
+  public int[] rainbowSort(int[] array) {
+    if(array.length == 0){
+      return array;
+    }
+    //r left must be red, g left must be red or green, b right must be blue
+    int r = 0, g = 0, b = array.length - 1;
+    while(g <= b){
+      if(array[g] == -1){
+        swap(r++, g++, array);
+      }
+      else if(array[g] == 0){
+        g++;
+      }
+      else{
+        swap(b--, g, array);
+      }
+    }
+    return array;
+  }
+  public void swap(int i, int j, int[] array){
+    int temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+
+//TC: O(n)
+//SC: O(1)

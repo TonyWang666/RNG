@@ -1,0 +1,40 @@
+Given an array of elements, reorder it as follow:
+public class Solution {
+  public int[] reorder(int[] array) {
+    if(array.length <= 1){
+      return array;
+    }
+    if(array.length % 2 == 0){
+      helper(0, array.length - 1, array);
+    } else {
+      helper(0, array.length - 2, array);
+    }
+    return array;
+  }
+  public void helper(int left, int right, int[] array){
+    if(right - left <= 1){
+      return;
+    }
+    int size = right - left + 1;
+    int lm = left + size/4;
+    int m = left + size/2;
+    int rm = left + size*3/4;
+    
+    reverse(lm, m - 1, array);
+    reverse(m, rm - 1, array);
+    reverse(lm, rm - 1, array);
+
+    helper(left, left + 2*(lm - left) - 1, array);
+    helper(left + 2*(lm - left), right, array);
+  }
+  public void reverse(int i, int j, int[] array){
+    while(i < j){
+      int temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+      i++;
+      j--;
+    }
+  }
+}
+

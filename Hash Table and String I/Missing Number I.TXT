@@ -1,0 +1,17 @@
+Given an integer array of size N - 1, containing all the numbers from 1 to N except one, find the missing number.
+
+public class Solution {
+  public int missing(int[] array) {
+    int sum = 1;
+    for(int i = 2; i <= array.length + 1; i++){
+      sum ^= i;
+    }
+    for(int i = 0; i < array.length; i++){
+      sum ^= array[i];
+    }
+    return sum;
+  }
+}
+
+//TC: O(n)
+//SC: O(1)

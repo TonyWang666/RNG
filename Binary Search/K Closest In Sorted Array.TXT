@@ -1,0 +1,44 @@
+Given a target integer T, a non-negative integer K and an integer array A sorted in ascending order, find the K closest numbers to T in A.
+
+public class Solution {
+  public int[] kClosest(int[] array, int target, int k) {
+    int[] res = new int[k];
+    if(array.length == 0 || k == 0){
+      return res;
+    }
+    int closestIndex = getClosest(array, target);// get cloeset index to target
+    res[0] = array[closestIndex];
+    int index = 1;
+    int left = closestIndex - 1, right = closestIndex + 1;
+    for(int i = 1; i < k; i++){
+      int leftDiff = left >=0 ? Math.abs(target - array[left]) : Integer.MAX_VALUE;
+      int rightDiff = right < array.length ? Math.abs(target - array[right]) : Integer.MAX_VALUE;
+      if(leftDiff < rightDiff){
+        res[index++] = array[left--];
+      } else{
+        res[index++] = array[right++];
+      }
+    }
+    return res;
+  }
+  public int getClosest(int[] array, int target){
+    int left = 0, right = array.length - 1;
+    while(left < right - 1){
+      int mid = left + (right - left)/2;
+      if(array[mid] >= target){
+        right = mid;
+      } else {
+        left = mid;
+      }
+    }
+    int leftDiff = Math.abs(target - array[left]);
+    int rightDiff = Math.abs(target - array[right]);
+    if(leftDiff < rightDiff){
+      return left;
+    } else {
+      return right;
+    }
+  }
+}
+// TC: O(log n + k)
+// SC: O(1)

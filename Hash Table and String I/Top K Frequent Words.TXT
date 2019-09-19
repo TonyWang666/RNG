@@ -1,0 +1,47 @@
+Given a composition with different kinds of words, return a list of the top K most frequent words in the composition.
+public class Solution {
+
+  public String[] topKFrequent(String[] combo, int k) {
+    // if(combo.length == 0 || combo.length < k){
+    //   return res;
+    // }
+    Map<String, Integer> hashMap = new HashMap<>(); 
+    for(int i = 0; i < combo.length; i++){
+      Integer num = hashMap.get(combo[i]);
+      if(num != null){
+        hashMap.put(combo[i], num + 1);
+      } else {
+        hashMap.put(combo[i], 1);
+      }
+    }
+    PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(k, new Comparator<Map.Entry<String, Integer>>(){
+      @Override
+      public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){
+        if(e1.getValue() == e2.getValue()){
+          return 0;
+        }
+        return e1.getValue() < e2.getValue() ? -1 : 1;
+      }
+    });
+    
+    for(Map.Entry<String, Integer> entry : hashMap.entrySet()){
+      if(minHeap.size() < k){
+        minHeap.offer(entry);
+      } else {
+        if(minHeap.peek().getValue() < entry.getValue()){
+          minHeap.poll();
+          minHeap.offer(entry);
+        }
+      }
+    }
+    String[] res = new String[minHeap.size()];
+    for(int i = res.length - 1; i >= 0; i--){   
+      res[i] = minHeap.poll().getKey();
+    } 
+    return res;
+  }
+}
+
+//TC: O(nlogk)
+//SC: O(n)
+

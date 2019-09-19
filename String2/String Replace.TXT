@@ -1,0 +1,72 @@
+public class Solution {
+  public String replace(String input, String source, String target) {
+    if(input.length() == 0 || source.length() == 0){
+      return input;
+    }
+    char[] array = input.toCharArray();
+    char[] s = source.toCharArray();
+    char[] t = target.toCharArray();
+    if(s.length >= t.length){
+      return shorterReplacement(array, s, t);
+    }
+    else{
+      return longerReplacement(array, s, t);
+    }
+  }
+  public String shorterReplacement(char[] array, char[] s, char[] t){
+    int slow = 0, fast = 0;
+    while(fast < array.length){
+      if(equals(fast, array, s)){
+        for(int i = 0; i < t.length; i++){
+          array[slow++] = t[i];
+        }
+        fast += s.length;
+      } else{ //not equals copy directly
+        array[slow++] = array[fast++];
+      }
+    }
+    return new String(array, 0, slow);
+  }
+  public String longerReplacement(char[] array, char[] s, char[] t){
+    int num = getNumsOccur(array, s);
+    char[] res = new char[array.length + (t.length - s.length)*num];
+    int slow = 0, fast = 0;
+    while(fast < array.length){
+      if(equals(fast, array, s)){
+        for(int i = 0; i < t.length; i++){
+          res[slow++] = t[i];
+        }
+        fast += s.length;
+      }
+      else{
+        res[slow++] = array[fast++];
+      }
+    }
+    return new String(res);
+  }
+  public int getNumsOccur(char[] array, char[] s){
+    int num = 0;
+    for(int i = 0; i < array.length - s.length + 1; i++){
+      if(equals(i, array, s)){
+        num++;
+      }
+    }
+    return num;
+  }
+  public boolean equals(int i, char[] array, char[] s){
+    int j = 0;
+    while(i < array.length && j < s.length){
+      if(array[i] != s[j]){
+        return false;
+      } else{
+        i++;
+        j++;
+      }
+    }
+    
+    return j == s.length ? true : false;
+  }
+}
+
+// TC: O(n^2)
+// SC: O(target)

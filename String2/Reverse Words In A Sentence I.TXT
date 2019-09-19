@@ -1,0 +1,31 @@
+Reverse the words in a sentence.
+
+public class Solution {
+  public String reverseWords(String input) {
+    char[] array = input.toCharArray();
+    reverse(0, array.length - 1, array);
+    int start = 0;
+    for(int i = 0; i < array.length; i++){
+      if(array[i] == ' '){
+        reverse(start, i - 1, array);
+        start = i + 1;
+      }
+      else if(i == array.length - 1){
+        reverse(start, i, array);
+      }
+    }
+    return new String(array);
+  }
+  public void reverse(int i, int j, char[] input){
+    while(i < j){
+      char temp = input[i];
+      input[i] = input[j];
+      input[j] = temp;
+      i++;
+      j--;
+    }
+  }
+}
+
+// TC: O(n^2)
+// SC: O(1)

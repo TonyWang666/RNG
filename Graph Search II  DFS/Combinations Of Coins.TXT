@@ -1,0 +1,29 @@
+Given a number of different denominations of coins (e.g., 1 cent, 5 cents, 10 cents, 25 cents), get all the possible ways to pay a target number of cents.
+public class Solution {
+  public List<List<Integer>> combinations(int target, int[] coins) {
+    List<List<Integer>> res = new ArrayList<>();
+    int[] cur = new int[coins.length];
+    helper(0, target, cur, coins, res);
+    return res;
+  }
+  public void helper(int index, int remain, int[] cur, int[] coins, List<List<Integer>> res){
+    if(index == coins.length){
+      if(remain == 0){
+        List<Integer> temp = new ArrayList<>();
+        for(int i = 0; i < cur.length; i++){
+          temp.add(cur[i]);
+        }
+        res.add(temp);
+      }
+      return;
+    }
+    for(int i = 0; i * coins[index] <= remain; i++){
+      cur[index] = i;
+      helper(index + 1, remain - i * coins[index], cur, coins, res);
+    }
+  }
+}
+
+//Let n be number of coints
+// TC: O(target^n)
+// SC: O(n)

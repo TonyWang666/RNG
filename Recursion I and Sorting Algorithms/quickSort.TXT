@@ -1,0 +1,42 @@
+public class Solution {
+  public int[] quickSort(int[] array) {
+    if(array == null || array.length <= 1){
+      return array;
+    }
+    partition(0, array.length - 1, array);
+    return array;
+  }
+  public void partition(int left, int right, int[] array){
+    if(left >= right){
+      return;
+    }
+    int pivot = helper(left, right, array); //pivot left is all smaller than it, right wis larger or equals than it
+    partition(left, pivot - 1, array);
+    partition(pivot + 1, right, array);
+  }
+  public int helper(int left, int right, int[] array){
+    Random r = new Random();
+    int pivot = left + r.nextInt(right - left + 1); //2 to 4 ==> nextInt will create 0,1,2
+    swap(pivot, right, array);
+    pivot = right;
+    int i = left, j = right - 1;
+    //i: left must be smaller than pivot
+    while(i <= j){
+      if(array[i] >= array[pivot]){
+        swap(i, j--, array);
+      } else{
+        i++;
+      }
+    }
+    swap(i, pivot, array);
+    return i;
+  }
+  public void swap(int i, int j, int[] array){
+    int temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+// TC: O(nlogn) WORSTCASE: O(n^2)
+// SC: O(logn) WORSTCASE: O(n)
+

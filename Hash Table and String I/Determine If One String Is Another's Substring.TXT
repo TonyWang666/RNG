@@ -1,0 +1,42 @@
+Determine If One String Is Another's Substring  
+public class Solution {
+    public int strstr(String large, String small) {
+      if(small == null || small.length() == 0){
+        return 0;
+      }
+      // Using Rabin-Karp Algorithm
+      if(large == null || large.length() == 0){
+        return -1;
+      }
+      int smallSize = small.length();
+      int largeSize = large.length();
+      int smallHash = calcHash(small, 0, small.length(), Integer.MAX_VALUE);
+      for(int i = 0; i <= largeSize - smallSize; i++){
+        if(calcHash(large, i, smallSize, Integer.MAX_VALUE) == smallHash && equals(large, small, i)){
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    public boolean equals(String large, String small, int largeStart){
+      int smallSize = small.length();
+      for(int i = largeStart, j = 0; i < smallSize && j < smallSize; i++, j++){
+        if(large.charAt(i) != small.charAt(j)){
+          return false;
+        }
+      }
+      return true;
+    }
+    //a:97, b:98, c:99
+    public int calcHash(String target, int start, int size, int module){
+      if(target == null){
+        return -1;
+      }
+      int total = 0;
+      for(int i = start; i < start + size; i++){
+        total += ((int)target.charAt(i)) % module;
+      }
+      return total;
+    }
+  }

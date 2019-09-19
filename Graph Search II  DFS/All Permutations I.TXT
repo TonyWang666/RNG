@@ -1,0 +1,30 @@
+Given a string with no duplicate characters, return a list with all permutations of the characters.
+
+
+public class Solution {
+  public List<String> permutations(String set) {
+    List<String> res = new ArrayList<>();
+    char[] charArr = set.toCharArray(); //String in java can't do inplace replacement so we use char[] array
+    helper(0, charArr, res);
+    return res;
+  }
+  public void helper(int index, char[] array, List<String> res){
+    if(index == array.length){
+      res.add(new String(array));
+      return;
+    }
+    for(int i = index; i < array.length; i++){
+      swap(i, index, array);
+      helper(index + 1, array, res);
+      swap(i, index, array);
+    }
+  }
+  public void swap(int i, int j, char[] array){
+    char temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+
+//TC: O(n! * n)
+//SC: O(n)

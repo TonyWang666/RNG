@@ -1,0 +1,37 @@
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+
+
+public class Solution {
+  public List<Integer> postOrder(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if(root == null){
+      return res;
+    }
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    stack.offerLast(root);
+    while(!stack.isEmpty()){
+      root = stack.pollLast();
+      res.add(root.key);
+      if(root.left != null){
+        stack.offerLast(root.left);
+      }
+      if(root.right != null){
+        stack.offerLast(root.right);
+      }
+    }
+    Collections.reverse(res);
+    return res;
+  }
+}
+
+// TC:  O(n);
+// SC:  O(n)

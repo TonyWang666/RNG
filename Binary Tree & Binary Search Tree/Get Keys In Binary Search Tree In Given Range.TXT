@@ -1,0 +1,38 @@
+Get the list of keys in a given binary search tree in a given range[min, max] in ascending order, both min and max are inclusive.
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+ //inOrder go through
+public class Solution {
+  public List<Integer> getRange(TreeNode root, int min, int max) {
+    List<Integer> res = new ArrayList<>();
+    addRange(root, min, max, res);
+    return res;
+  }
+  public void addRange(TreeNode root, int min, int max, List<Integer> res){
+    if(root == null){
+      return;
+    }
+    if(root.key >= min && root.key <= max){
+      addRange(root.left, min, max, res);
+      res.add(root.key);
+      addRange(root.right, min, max, res);
+    }
+    else if(root.key < min){
+      addRange(root.right, min, max, res);
+    } 
+    else{
+      addRange(root.left, min, max, res);
+    }
+  }
+}
+
+// TC: O(n)
+// SC: O(height)

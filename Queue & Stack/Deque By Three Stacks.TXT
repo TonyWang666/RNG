@@ -1,0 +1,105 @@
+public class Solution {
+  private Deque<Integer> s1;
+  private Deque<Integer> s2;
+  private Deque<Integer> s3;
+  public Solution() {
+    s1 = new ArrayDeque<>();
+    s2 = new ArrayDeque<>();
+    s3 = new ArrayDeque<>();
+  }
+  
+//When offerFirst: offer into s3
+  public void offerFirst(int element) {
+    s3.offerLast(element); 
+  }
+//When offerLast: offer into s1 
+  public void offerLast(int element) {
+    s1.offerLast(element);
+  }
+  //When pollFirst: find s3 / find s2 / move s1 to s2 and find s2
+  public Integer pollFirst() {
+    if(isEmpty()){
+      return null;
+    }
+    else if(!s3.isEmpty()){
+      return s3.pollLast();
+    }
+    else if(!s2.isEmpty()){
+      return s2.pollLast();
+    }
+    else{
+      move(s1, s2);
+      return s2.pollLast();
+    }
+  }
+  //When pollLast:find s1 / move s2 to s1 and find s1 / move s3 to s1 and find s1
+  public Integer pollLast() {
+    if(isEmpty()){
+      return null;
+    }
+    else if(!s1.isEmpty()){
+      return s1.pollLast();
+    }
+    else if(!s2.isEmpty()){
+      move(s2, s1);
+      return s1.pollLast();
+    }
+    else{
+      move(s3, s1);
+      return s1.pollLast();
+    }
+  }
+//When peekFirst: find s3 / find s2 / move s1 to s2 and find s2
+  public Integer peekFirst() {
+    if(isEmpty()){
+      return null;
+    }
+    else if(!s3.isEmpty()){
+      return s3.peekLast();
+    }
+    else if(!s2.isEmpty()){
+      return s2.peekLast();
+    }
+    else{
+      move(s1, s2);
+      return s2.peekLast();
+    }
+  }
+//When peekLast: find s1 / move s2 to s1 and find s1 / move s3 to s1 and find s1
+  public Integer peekLast() {
+    if(isEmpty()){
+      return null;
+    }
+    else if(!s1.isEmpty()){
+      return s1.peekLast();
+    }
+    else if(!s2.isEmpty()){
+      move(s2, s1);
+      return s1.peekLast();
+    }
+    else{
+      move(s3, s1);
+      return s1.peekLast();
+    }
+  }
+  
+  public int size() { //done
+    return s1.size() + s2.size() + s3.size();
+  }
+  
+  public boolean isEmpty() { //done
+    return s1.isEmpty() && s2.isEmpty() && s3.isEmpty();
+  }
+  public void move(Deque<Integer> s1, Deque<Integer> s2){
+    while(!s1.isEmpty()){
+      s2.offerLast(s1.pollLast());
+    }
+  }
+}
+
+// When pollFirst: find s3 / find s2 / move s1 to s2 and find s2
+// When pollLast:find s1 / move s2 to s1 and find s1 / move s3 to s1 and find s1
+// When offerFirst: offer into s3
+// When offerLast: offer into s1
+// When peekFirst: find s3 / find s2 / move s1 to s2 and find s2
+// When peekLast: find s1 / move s2 to s1 and find s1 / move s3 to s1 and find s1
