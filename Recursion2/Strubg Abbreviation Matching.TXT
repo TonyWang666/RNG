@@ -1,0 +1,36 @@
+public class Solution {
+  public boolean match(String input, String pattern) {
+    int it = 0, ip = 0;
+    while(ip < pattern.length() && it < input.length()){
+      if(pattern.charAt(ip) >= 'a' && pattern.charAt(ip) <= 'z'){
+        if(pattern.charAt(ip) != input.charAt(it)){
+          return false;
+        } else {
+          ip++;
+          it++;
+        }
+      } else {
+        int[] offset = copyDigit(ip, pattern); //0 for it, 1 for ip
+        it += offset[0];
+        ip += offset[1];
+      }
+    }
+    if(ip != pattern.length() || it != input.length()){
+      return false;
+    } else {
+      return true;
+    }
+  }
+  public int[] copyDigit(int ip, String pattern){
+    int sum = 0, len = 0; 
+    while(ip < pattern.length() && pattern.charAt(ip) >= '0' && pattern.charAt(ip) <= '9'){
+      sum = sum * 10 + (pattern.charAt(ip) - '0');
+      ip++;
+      len++;
+    }
+    return new int[]{sum , len};
+  }
+}
+
+// TC: O(n)
+// SC: O(1)

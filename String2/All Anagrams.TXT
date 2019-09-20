@@ -1,0 +1,62 @@
+Find all occurrence of anagrams of a given string s in a given string l. Return the list of starting indices.
+public class Solution {
+  public List<Integer> allAnagrams(String lo, String sh) {
+    List<Integer> res = new ArrayList<>();
+    if(sh.length() < lo.length() || lo.length() == 0){
+      return res;
+    }
+    Map<Character, Integer> hashMap = new HashMap<>();
+    int unique = setUpMap(lo, sh, hashMap); //diff is number of different between lo and content in hashMap
+    if(unique == 0){
+      res.add(0);
+    }
+    int left = 1, right = lo.length();
+    while(right < sh.length()){
+      Integer prevLeft = hashMap.get(sh.charAt(left - 1));
+      if(prevLeft != null){
+        hashMap.put(sh.charAt(left - 1), prevLeft + 1);
+        unique = (prevLeft == 0) ? unique + 1 : unique;
+      }
+      Integer curRight = hashMap.get(sh.charAt(right));
+      if(curRight != null){
+        hashMap.put(sh.charAt(right), curRight - 1);
+        unique = (curRight == 1) ? unique - 1 : unique;
+      }
+      if(unique == 0){
+        res.add(left);
+      }
+      left++;
+      right++;
+    }
+    return res;
+  }
+  public int setUpMap(String lo, String sh, Map<Character, Integer> hashMap){
+    int unique = 0;
+    for(int i = 0; i < lo.length(); i++){
+      Integer cur = hashMap.get(lo.charAt(i));
+      if(cur == null){
+        hashMap.put(lo.charAt(i), 1);
+        unique++;
+      } else {
+        hashMap.put(lo.charAt(i), cur + 1);
+      }
+    }
+    for(int i = 0; i < lo.length(); i++){
+      Integer cur = hashMap.get(sh.charAt(i));
+      if(cur != null && cur > 0){
+        hashMap.put(sh.charAt(i), cur - 1);
+        unique = (cur == 1) ? unique - 1 : unique;
+      }
+    }
+    return unique;
+  }
+}
+
+// TC: O(n）
+// SC: O(1)
+
+1. 一个hashMap存每一个lo内的字符和出现次数
+2. 用一个unique来存，在给当前窗口下，还有多少个unique character未被满足(不等于0）
+3. 窗口大小永远等于lo的size
+4. 左边跑出去的如果在hashMap内，则对应的hashValue +1, 若原本是0，则unique++
+5. 右边新加的如果在hashMap内，则对应的hashValue - 1， 若原本是1，加之后变成了0，则unique--.

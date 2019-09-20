@@ -1,0 +1,13 @@
+Determine the number of bits that are different for two given integers.
+
+public class Solution {
+  public int diffBits(int a, int b) {
+    int res = a ^ b;
+    int count = 0;
+    while(res != 0){
+      res = res & (res - 1);
+      count++;
+    }
+    return count;
+  }
+}

@@ -1,0 +1,45 @@
+public class Solution {
+  public String decompress(String input) {
+    if(input.length() <= 1){
+      return input;
+    }
+    char[] origin = input.toCharArray();
+    int count = 0;
+    for(int i = 0; i < origin.length; i++){
+      count += (origin[i] >= '0' && origin[i] <= '9') ? (origin[i] - '0') : 0;
+    }
+    //step 2:
+    char[] res = new char[count];
+    int slow = 0, fast = 0;
+    while(fast < origin.length){
+      if(fast + 1 < origin.length && origin[fast + 1] == '0'){
+        fast += 2;
+        continue;
+      }
+      int[] offsets = copyDigit(slow, res, fast, origin);
+      fast += offsets[0];
+      slow += offsets[1];
+    }
+    return new String(res);
+  }
+// a0b1c4d1
+//       f
+//           s
+// _ _ _ _ _ _
+// b c c c c
+  public int[] copyDigit(int slow, char[] res, int fast, char[] origin){
+    int i = fast + 1, count = 0, len = 1;
+    while(i < origin.length && origin[i] >= '0' && origin[i] <= '9'){
+      count = count * 10 + (origin[i++] - '0');
+      len++;
+    }
+    for(int k = 0; k < count; k++){
+      res[slow++] = origin[fast];
+    }
+    return new int[]{len, count};
+  }
+}
+// TC: O(n)
+// SC: O(1)
+
+

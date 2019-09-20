@@ -1,0 +1,47 @@
+Traverse an M * N 2D array in spiral order clock-wise starting from the top left corner. Return the list of traversal sequence.
+public class Solution {
+  public List<Integer> spiral(int[][] matrix) {
+    List<Integer> res = new LinkedList<>();
+    if(matrix.length == 0 || matrix[0].length == 0){
+      return res;
+    }
+    int m = matrix.length, n = matrix[0].length;
+    helper(0, matrix, m, n, res);
+    return res;
+  }
+  public void helper(int index, int[][] matrix, int m, int n, List<Integer> res){
+    if(index *2 == m || index *2 == n){
+      return;
+    }
+    if(index == m/2){
+      for(int i = index; i < n - index; i++){
+        res.add(matrix[index][i]);
+      }
+      return;
+    }
+    if(index == n/2){
+      for(int i = index; i < m - index; i++){
+        res.add(matrix[i][index]);
+      }
+      return;
+    }
+    int rowDown = m - index - 1, colRight = n - index - 1;
+    for(int i = index; i < colRight; i++){
+      res.add(matrix[index][i]);
+    }
+    for(int i = index; i < rowDown; i++){
+      res.add(matrix[i][colRight]);
+    }
+    for(int i = colRight; i > index; i--){
+      res.add(matrix[rowDown][i]);
+    }
+    for(int i = rowDown; i > index; i--){
+      res.add(matrix[i][index]);
+    }
+    helper(index + 1, matrix, m, n, res);
+  }
+}
+// TC: O(m * n)
+// SC: O(min(m, n)/2)
+// 可以考虑每次把m和n减2，当m或n为零时则没有剩余；
+// 还可以用index✖2是否等于 来判断，如果等于m或者n，说明已经没有剩余的elemnet了。

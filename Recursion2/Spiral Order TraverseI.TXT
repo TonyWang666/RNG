@@ -1,0 +1,40 @@
+Traverse an N * N 2D array in spiral order clock-wise starting from the top left corner. Return the list of traversal sequence.
+public class Solution {
+  public List<Integer> spiral(int[][] matrix) {
+    List<Integer> res = new ArrayList<>();
+    if(matrix.length == 0){
+      return res;
+    }
+    int size = matrix.length;
+    for(int i = 0; i <= size/2; i++){
+      int colRight = size - i - 1;
+      int rowDown = size - i - 1; 
+      for(int j = i; j < colRight; j++){
+        res.add(matrix[i][j]);
+      }
+      for(int j = i; j < rowDown; j++){
+        res.add(matrix[j][colRight]);
+      }
+      for(int j = colRight; j > i; j--){
+        res.add(matrix[rowDown][j]);
+      }
+      for(int j = rowDown; j > i; j--){
+        res.add(matrix[j][i]);
+      }
+    }
+    if(size % 2 != 0){
+      res.add(matrix[size/2][size/2]);
+    } 
+    return res;
+  }
+}
+
+// TC: O(n)
+// SC: O(1)
+
+// start from 0 to (<=) size/2
+
+// a a a a
+// a a a a
+// a a a a 
+// a a a a

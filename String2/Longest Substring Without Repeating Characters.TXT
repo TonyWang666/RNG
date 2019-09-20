@@ -1,0 +1,38 @@
+Given a string, find the longest substring without any repeating characters and return the length of it. The input string is guaranteed to be not null.
+public class Solution {
+  public int longest(String input) {
+    if(input.length() <= 1){
+      return input.length();
+    }
+    Map<Character, Integer> map = new HashMap<>();
+    int left = 0, right = 0, max = 0;
+    for(int i = 0; i < input.length(); i++){
+      Integer target = map.get(input.charAt(i));
+      if(target == null){
+        map.put(input.charAt(i), i);
+        right = i;
+        max = Math.max(max, right - left + 1);
+      } else {
+        map.put(input.charAt(i), i);
+        left = (left < target + 1) ? target + 1 : left;
+        right = i;
+        max = Math.max(max, right - left + 1);
+      }
+    }
+    return max;
+  }
+}
+
+// TC: O(n)
+// SC: O(1)
+
+// e f h r g s a y e k a s d a n f e v
+//                 r
+// left = 1;
+// right = 1;
+// hashMap: e:8, f:1, h:2, r:3, g:4, s:5, a:6, y:7 
+// // b c d f b d
+// // hashMap: b:4 c:1 d:5 f:3 
+// // left:  3
+// // right: 5
+// // max = right - left + 1;

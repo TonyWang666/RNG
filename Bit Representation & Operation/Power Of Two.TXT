@@ -1,0 +1,9 @@
+Determine if a given integer is power of 2.
+
+public class Solution {
+  public boolean isPowerOfTwo(int number) {
+    return number > 0 && (number & (number - 1)) == 0;
+  }
+}
+// TC: O(1)
+// SC: O(1)

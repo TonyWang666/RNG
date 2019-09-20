@@ -1,0 +1,19 @@
+Reverse bits of a 32-bit integer. 
+
+public class Solution {
+  public long reverseBits(long n) {
+    if(n == 0){
+      return (long)(0);
+    }
+    for(int i = 0; i < 16; i++){
+      if(((n >> i) & 1L) != ((n >> (31 - i)) & 1L)){
+        n ^= 1L << i;
+        n ^= 1L << (31 - i);
+      }
+    }
+    return n;
+  }
+}
+
+// TC: O(n)
+// SC: O(1)

@@ -1,0 +1,28 @@
+/**
+ * class ListNode {
+ *   public int value;
+ *   public ListNode next;
+ *   public ListNode(int value) {
+ *     this.value = value;
+ *     next = null;
+ *   }
+ * }
+ */
+
+ //passDown: next
+ //passUp: Second Node
+ //curdo: point first to returned value, point sec to first
+public class Solution {
+  public ListNode reverseInPairs(ListNode head) {
+    if(head == null || head.next == null){
+      return head;
+    }
+    ListNode second = head.next;
+    head.next = reverseInPairs(second.next);
+    second.next = head;
+    return second;
+  }
+}
+
+// TC: O(n)
+// SC: O(n)
