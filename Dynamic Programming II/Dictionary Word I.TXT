@@ -1,0 +1,24 @@
+Given a word and a dictionary, determine if it can be composed by concatenating words from the given dictionary.
+public class Solution {
+  public boolean canBreak(String input, String[] dict) {
+    boolean[] M = new boolean[input.length() + 1];
+    M[0] = true;
+    Set<String> set = new HashSet<>();
+    for(int i = 0; i < dict.length; i++){
+      set.add(dict[i]);
+    }
+    for(int i = 1; i <= input.length(); i++){
+      boolean tempRes = false;
+      for(int j = 0; j < i; j++){
+        tempRes = tempRes == false ? (M[j] && set.contains(input.substring(j, i))) : tempRes;
+      }
+      M[i] = tempRes;
+    }
+    return M[input.length()];
+  }
+}
+
+
+//TC: O(n^2)
+//SC: O(n)
+

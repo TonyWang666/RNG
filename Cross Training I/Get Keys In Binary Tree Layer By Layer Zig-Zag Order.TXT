@@ -1,0 +1,61 @@
+Get the list of keys in a given binary tree layer by layer in zig-zag order.
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+public class Solution {
+  public List<Integer> zigZag(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if(root == null){
+      return res;
+    }
+    Deque<TreeNode> deque = new ArrayDeque<>();
+    deque.offerLast(root);
+    int count = 1;
+    while(!deque.isEmpty()){
+      int size = deque.size();
+      if(count % 2 == 1){
+        for(int i = 0; i < size; i++){
+          TreeNode cur = deque.pollLast();
+          if(cur.right != null){
+            deque.offerFirst(cur.right);
+          }
+          if(cur.left != null){
+            deque.offerFirst(cur.left);
+          }
+          res.add(cur.key);
+        }
+      } else {
+        for(int i = 0; i < size; i++){
+          TreeNode cur = deque.pollFirst();
+          if(cur.left != null){
+            deque.offerLast(cur.left);
+          }
+          if(cur.right != null){
+            deque.offerLast(cur.right);
+          }
+          res.add(cur.key);
+        }
+      }
+      count++;
+    }
+    return res;
+  }
+}
+// TC: O(n)
+// SC: O(log n)
+// The order inside Deque is the order to print
+// insert and get direction can't be same!
+// res: 5 3 8 11 2 3 4 6
+// Deque: a b c d e
+//    5          get: right -> left;  insert: left; RightSubTree -> LeftSubTree   Odd
+//   3 8         get: left - > right; insert: right, leftSubTree -> RightSubTree  Even
+//  1 4 11       get: right -> left;  insert: left; RightSubTree -> LeftSubTree
+// 2 3 4  6 ->   get: left -> right;  insert: right, leftSubTree -> RightSubTree
+// a b c d e <-  get: right -> left;  insert: left, RightSubTree -> LeftSubTree 

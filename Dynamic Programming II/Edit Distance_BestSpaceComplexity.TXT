@@ -1,0 +1,57 @@
+Given two strings of alphanumeric characters, determine the minimum number of Replace, Delete, and Insert operations needed to transform one string into the other.
+public class Solution {
+  public int editDistance(String one, String two) {
+    int o = one.length(), t = two.length(), prev = 0;
+    int[] M;
+    int[] tempM;
+    if(o > t){
+      M = new int[t + 1];
+      tempM = new int[t + 1];
+    } else {
+      M = new int[o + 1];
+      tempM = new int[o + 1];
+      String temp = new String(two);
+      two = one;
+      one =  temp;
+      int tempSize = t;
+      t = o;
+      o = tempSize;
+    }
+    for(int i = 0; i < t; i++){
+      M[i] = i;
+    }
+    //one is the changing and vertical one
+    //we only need to save the values with size two for dynamic programming
+    for(int i = 1; i <= o; i++){
+      tempM[0] = i;
+      for(int j = 1; j <= t; j++){
+        if(one.charAt(i - 1) == two.charAt(j - 1)){
+          tempM[j] = M[j - 1];
+        } else{
+          tempM[j] = 1 + Math.min(Math.min(M[j - 1], tempM[j - 1]), M[j]);
+        }
+      }
+      for(int k = 0; k <= t; k++){
+        M[k] = tempM[k];
+      }
+    }
+    return M[t];
+  }
+}
+
+// target:
+// TC: O(m * n)
+// SC: O(min(m, n))
+
+// M[j] = new int[5];
+//        "" s i g h
+//     ""
+//     a
+//     s
+//     i
+//     t
+//     h
+
+// M[i] = 0 1 2 3 4
+// t[i] = 1 1 2 3 4
+// prev = 0

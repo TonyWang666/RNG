@@ -1,0 +1,36 @@
+Determine the largest square of 1s in a binary matrix (a binary matrix only contains 0 and 1), return the length of the largest square.
+
+public class Solution {
+  public int largest(int[][] matrix) {
+    if(matrix.length == 0){
+      return 0;
+    }
+    int m = matrix.length, n = matrix[0].length;
+    int[][] M = new int[m][n];
+    int globalMax = 0;
+    for(int i = 0; i < m; i++){
+      for(int j = 0; j < n; j++){
+        if(matrix[i][j] == 1){
+          if(i == 0 || j == 0){
+            M[i][j] = 1;
+          } else{
+            M[i][j] =  1 + Math.min(Math.min(M[i - 1][j], M[i][j - 1]), M[i - 1][j - 1]);
+          }
+          globalMax = Math.max(globalMax, M[i][j]);
+        } else {
+          M[i][j] = 0;
+        }
+      }
+    }
+    return globalMax;
+  }
+}
+// TC: O(n^2)
+// SC: O(n^2)
+
+// int[][] M = new int[M][N]
+// base case: if M[i][j] == 1, then M[i][0] or M[j][0] all equals to 1;
+//             else: 
+//             M[i][0] or M[0][j] = 0;
+// M[i][j] is 以此为正方形右下角，能形成的最大正方形边长
+// M[i][j] = min(M[i - 1][j], M[i][j - 1], M[i - 1][j - 1]);

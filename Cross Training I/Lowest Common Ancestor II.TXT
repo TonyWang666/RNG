@@ -1,0 +1,57 @@
+Given two nodes in a binary tree (with parent pointer available), find their lowest common ancestor.
+/**
+ * public class TreeNodeP {
+ *   public int key;
+ *   public TreeNodeP left;
+ *   public TreeNodeP right;
+ *   public TreeNodeP parent;
+ *   public TreeNodeP(int key, TreeNodeP parent) {
+ *     this.key = key;
+ *     this.parent = parent;
+ *   }
+ * }
+ */
+public class Solution {
+  public TreeNodeP lowestCommonAncestor(TreeNodeP one, TreeNodeP two) {
+    if(one == null || two == null){
+      return null;
+    }
+    int oneHeight = getHeight(one);
+    int twoHeight = getHeight(two);
+    if(oneHeight > twoHeight){
+      one = move(one, oneHeight - twoHeight);
+    } else {
+      two = move(two, twoHeight - oneHeight);
+    }
+    while(one != null && two != null && one != two){
+      one = one.parent;
+      two = two.parent;
+    }
+    return one == two ? one : null;
+  }
+  public TreeNodeP move(TreeNodeP root, int level){
+
+    
+    for(int i = 0; i < level; i++){
+      root = root.parent;
+    }
+    return root;
+  }
+  public int getHeight(TreeNodeP root){
+    int level = 0;
+    while(root != null && root.parent != null){
+      root = root.parent;
+      level++;
+    }
+    return level;
+  }
+}
+// TC: O(n)
+// SC: O(n)
+  //           5
+  //       9         12
+  // (2)2     3(2)       14(2)
+
+  // 若在同一层，直接一起网上找parent
+  // 若在不同层，先把矮的移到和高的同一层，再一起往上找
+

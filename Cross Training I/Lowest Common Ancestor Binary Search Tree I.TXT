@@ -1,0 +1,36 @@
+Given two keys in a binary search tree, find their lowest common ancestor.
+
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+public class Solution {
+  public TreeNode lca(TreeNode root, int p, int q) {
+    if(root == null){
+      return null;
+    }
+    if(root.key == p || root.key == q){
+      return root;
+    }
+    TreeNode left = lca(root.left, p, q);
+    TreeNode right = lca(root.right, p, q);
+    if(left == null && right == null){
+      return null;
+    }
+    else if(left == null || right == null){
+      return left == null ? right : left;
+    } 
+    else {
+      return root;
+    }
+  }
+}
+
+// TC: O(n)
+// SC: O(n)

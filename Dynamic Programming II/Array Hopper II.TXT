@@ -1,0 +1,34 @@
+Given an array A of non-negative integers, you are initially positioned at index 0 of the array. A[i] means the maximum jump distance from index i (you can only jump towards the end of the array). Determine the minimum number of jumps you need to reach the end of array. If you can not reach the end of the array, return -1.
+
+public class Solution {
+  public int minJump(int[] array) {
+    int[] M = new int[array.length];
+    for(int i = 0; i < array.length; i++){
+      if(i != 0 && M[i] == 0){
+        return -1;
+      }
+      for(int j = 1; i + j < array.length && j <= array[i]; j++){
+        if(M[i + j] == 0){
+          M[i + j] = M[i] + 1;
+        } else {
+          M[i + j] = Math.min(M[i + j], M[i] + 1);
+        }
+      }
+    }
+    return M[array.length - 1];
+  }
+}
+
+// TC: O(n^2)
+// SC: O(n)
+
+// M[0] = 0
+
+// M[i] = Math.min(M[])
+
+// i: current position of M; if i!=0 && M[i] == 0 ==> return -1;
+// j: the offset to move i to reachable position; 1 to M[i]
+//   if(M[i + j] == 0):
+//     M[i + j] = M[i] + 1;
+//   else:
+//     M[i + j] = Math.min(M[i + j], M[i] + 1);

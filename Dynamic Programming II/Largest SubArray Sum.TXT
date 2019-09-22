@@ -1,0 +1,24 @@
+Given an unsorted integer array, find the subarray that has the greatest sum. Return the sum.
+public class Solution {
+  public int largestSum(int[] array) {
+    int prev = array[0], globalMax = array[0];
+    for(int i = 1; i < array.length; i++){
+      if(prev <= 0){
+        prev = array[i];
+      } else {
+        prev += array[i];
+      }
+      globalMax = Math.max(globalMax, prev);
+    }
+    return globalMax;
+  }
+}
+
+// TC: O(n)
+// SC: O(1)
+
+//      2 -1  4 -2  1 
+// prev: last continous subarray sum
+// curMax: if prev <= 0 ==> curMax = array[i]
+//         else         ==> curMax = array[i] + prev
+// globalMax: update in each loop
