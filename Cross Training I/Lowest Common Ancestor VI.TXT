@@ -1,0 +1,48 @@
+Given M nodes in a K-nary tree, find their lowest common ancestor.
+
+/**
+* public class KnaryTreeNode {
+ *     int key;
+ *     List<KnaryTreeNode> children;
+ *     public KnaryTreeNode(int key) {
+ *         this.key = key;
+ *         this.children = new ArrayList<>();
+ *     }
+ * }
+ */
+ //passUp: the lowest Common Acestor found til this node
+ //curDo: Loop all the child of current root; if more than 1 returned value, return root; else return false
+ //passDown: child
+public class Solution {
+  public KnaryTreeNode lowestCommonAncestor(KnaryTreeNode root, List<KnaryTreeNode> nodes) {
+    if(root == null){
+      return root;
+    }
+    Set<KnaryTreeNode> set = new HashSet<>();
+    for(KnaryTreeNode each : nodes){
+      set.add(each);
+    }
+    return helper(root, set);
+  }
+  public KnaryTreeNode helper(KnaryTreeNode root, Set<KnaryTreeNode> set){
+    if(root == null){
+      return null;
+    }
+    if(set.contains(root)){
+      return root;
+    }
+    KnaryTreeNode prevNode = null;
+    for(int i = 0; i < root.children.size(); i++){
+      KnaryTreeNode curNode = helper(root.children.get(i), set);
+      if(prevNode != null && curNode != null){
+        return root;
+      } else if(curNode != null){
+        prevNode = curNode;
+      }
+    }
+    return prevNode;
+  }
+} 
+
+// TC: O(n)
+// SC: O(n)

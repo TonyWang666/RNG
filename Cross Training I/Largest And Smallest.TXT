@@ -1,0 +1,40 @@
+Use the least number of comparisons to get the largest and smallest number in the given integer array. Return the largest number and the smallest number.
+
+public class Solution {
+  public int[] largestAndSmallest(int[] array) {
+    int i = 0, j = array.length - 1;
+    while(i < j){
+      if(array[i] > array[j]){
+        swap(array, i, j);
+      }
+      i++;
+      j--;
+    }
+    int[] res = new int[2];
+    res[1] = findMin(array, 0, i);
+    res[0] = findMax(array, i, array.length - 1);
+    return res;
+  }
+  public void swap(int[] array, int i, int j){
+    int temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  public int findMin(int[] array, int i, int j){
+    int min = array[i];
+    for(int k = i + 1; k <= j; k++){
+      min = Math.min(min, array[k]);
+    }
+    return min;
+  }
+  public int findMax(int[] array, int i, int j){
+    int max = array[i];
+    for(int k = i + 1; k <= j; k++){
+      max = Math.max(max, array[k]);
+    }
+    return max;
+  }
+}
+
+//originally, we need sort and get max and min, which is nlogn Timecomplexity and much more comparison.
+//Now we just need 1.5n comparison.
