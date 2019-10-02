@@ -1,0 +1,16 @@
+Determine if there exist two elements in a given array, the sum of which is the given target number.
+
+//TC: O(n)
+//SC: O(n)
+public class Solution {
+  public boolean existSum(int[] array, int target) {
+    Set<Integer> set = new HashSet<>();
+    for(int each : array){
+      if(set.contains(target - each)){
+        return true;
+      }
+      set.add(each);
+    }
+    return false;
+  }
+}
