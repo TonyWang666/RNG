@@ -1,0 +1,57 @@
+Merge K sorted array into one big sorted array in ascending order.
+
+// TC: O(m*n*log(m))
+// SC: O(m)
+public class Solution {
+  static class Pair{
+    int outerIndex;
+    int innerIndex;
+    int value;
+    public Pair(int o, int i, int v){
+      outerIndex = o;
+      innerIndex = i;
+      value = v;
+    }
+  }
+  public int[] merge(int[][] arrayOfArrays) {
+    List<Integer> res = new ArrayList<>();
+    if(arrayOfArrays.length == 0){
+      return new int[]{};
+    }
+    PriorityQueue<Pair> minHeap = new PriorityQueue<>(arrayOfArrays.length, new Comparator<Pair>(){
+      @Override
+      public int compare(Pair p1, Pair p2){
+        if(p1.value == p2.value){
+          return 0;
+        }
+        return p1.value < p2.value ? -1 : 1;
+      }
+    });
+    int resultSize = preProcessPQ(minHeap, arrayOfArrays);
+    while(!minHeap.isEmpty()){
+      Pair cur = minHeap.poll();
+      res.add(cur.value);
+      if(cur.innerIndex + 1 < arrayOfArrays[cur.outerIndex].length){
+        minHeap.offer(new Pair(cur.outerIndex, cur.innerIndex + 1, arrayOfArrays[cur.outerIndex][cur.innerIndex + 1]));
+      }
+    }
+    int[] result = new int[resultSize];
+    copyResult(result, res);
+    return result;
+  }
+  public void copyResult(int[] result, List<Integer> res){
+    for(int i = 0; i < res.size(); i++){
+      result[i] = res.get(i);
+    }
+  }
+  public int preProcessPQ(PriorityQueue<Pair> minHeap, int[][] array){
+    int size = 0;
+    for(int i = 0; i < array.length; i++){
+      if(array[i].length > 0){
+        size += array[i].length;
+        minHeap.offer(new Pair(i, 0, array[i][0]));
+      }
+    }
+    return size;
+  }
+}
