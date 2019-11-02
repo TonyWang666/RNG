@@ -1,0 +1,58 @@
+Make a deep copy of an undirected graph, there could be cycles in the original graph.
+
+Using BFS
+
+/*
+* class GraphNode {
+*   public int key;
+*   public List<GraphNode> neighbors;
+*   public GraphNode(int key) {
+*     this.key = key;
+*     this.neighbors = new ArrayList<GraphNode>();
+*   }
+* }
+*/
+//bfs
+public class Solution {
+  public List<GraphNode> copy(List<GraphNode> graph) {
+    if(graph.size() == 0){
+      return graph;
+    }
+    Set<GraphNode> set = new HashSet<>();
+    Deque<GraphNode> queue = new ArrayDeque<>();
+    Map<GraphNode, GraphNode> map = new HashMap<>(); //link from old to new
+
+    for(int j = 0; j < graph.size(); j++){
+      GraphNode root = graph.get(j);
+      if(set.contains(root)){
+        continue;
+      }
+      GraphNode newRoot = new GraphNode(root.key);
+      map.put(root, newRoot);
+      queue.offerFirst(root);
+      while(!queue.isEmpty()){
+        GraphNode oldCur = queue.pollFirst();
+        if(!set.add(oldCur)){
+          continue;
+        }
+        GraphNode newCur = map.get(oldCur);
+        if(newCur == null){
+          newCur = new GraphNode(oldCur.key);
+          map.put(oldCur, newCur);
+        }
+        for(int i = 0; i < oldCur.neighbors.size(); i++){
+          GraphNode nei = oldCur.neighbors.get(i);
+          GraphNode newNei = map.get(nei);
+          if(newNei == null){
+            newNei = new GraphNode(nei.key);
+            map.put(nei, newNei);
+          }
+          newCur.neighbors.add(newNei);
+          queue.offerLast(nei);
+        }
+      }
+    }
+   
+    return new ArrayList<GraphNode>(map.values());
+  }
+}

@@ -1,0 +1,46 @@
+Each of the nodes in the linked list has another pointer pointing to a random node in the list or null. Make a deep copy of the original list.
+
+/**
+ * class RandomListNode {
+ *   public int value;
+ *   public RandomListNode next;
+ *   public RandomListNode random;
+ *   public RandomListNode(int value) {
+ *     this.value = value;
+ *   }
+ * }
+ */
+ //用一个hashMap<oldNode : newNode> 来存所有的对应node
+public class Solution {
+  public RandomListNode copy(RandomListNode head) {
+    RandomListNode dummy = new RandomListNode(-1);
+    RandomListNode cur = dummy;
+    Map<RandomListNode, RandomListNode> map = new HashMap<>();
+    while(head != null){
+      RandomListNode temp = map.get(head);
+      if(temp == null){
+        cur.next = new RandomListNode(head.value);
+        cur = cur.next;
+        map.put(head, cur);
+      } else { //the next node is alrady exist
+        cur.next = temp;
+        cur = cur.next;
+      }
+      if(head.random != null){
+        RandomListNode random = map.get(head.random);
+        if(random == null){
+          RandomListNode newRandom = new RandomListNode(head.random.value);
+          cur.random = newRandom;
+          map.put(head.random, cur.random);
+        } else {
+          cur.random = random;
+        }
+      }
+      head = head.next;
+    }
+    return dummy.next;
+  }
+}
+
+// TC: O(n)
+// SC: O(n)
