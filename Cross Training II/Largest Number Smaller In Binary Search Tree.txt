@@ -1,0 +1,32 @@
+In a binary search tree, find the node containing the largest number smaller than the given target number.
+
+If there is no such number, return -2^31.
+
+
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+
+ //TC: O(h)
+ //SC: O(h)
+public class Solution {
+  public int largestSmaller(TreeNode root, int target) {
+    int res = Integer.MIN_VALUE;
+    while(root != null){
+      if(root.key >= target){
+        root = root.left;
+      } else {
+        res = root.key;
+        root = root.right;
+      }
+    }
+    return res;
+  }
+}

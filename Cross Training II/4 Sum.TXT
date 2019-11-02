@@ -1,0 +1,25 @@
+Determine if there exists a set of four elements in a given array that sum to the given target number.
+
+//Strong Strong hire solution
+//TC: O(n^2)
+//SC: O(n^2)
+public class Solution {
+  public boolean exist(int[] array, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for(int j = 1; j < array.length; j++){
+      for(int i = 0; i < j; i++){
+        Integer targetJ = map.get(target - array[i] - array[j]);
+        if(targetJ != null && targetJ < i){
+          return true;
+        }
+
+        //Now pupt array[i] and array[j] into hashMap to save for later check as a and b
+        if(!map.containsKey(array[i] + array[j])){
+          map.put(array[i] + array[j], j);
+        }
+      }
+    }
+    return false;
+  }
+}
+

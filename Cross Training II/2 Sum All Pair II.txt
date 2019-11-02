@@ -1,0 +1,23 @@
+Find all pairs of elements in a given array that sum to the pair the given target number. Return all the distinct pairs of values.
+
+// TC: O(n)
+// SC: O(n)
+public class Solution {
+  public List<List<Integer>> allPairs(int[] array, int target) {
+    List<List<Integer>> res = new ArrayList<>();
+    Map<Integer, Boolean> map = new HashMap<>();
+    for(int i = 0; i < array.length; i++){
+      Boolean deter = map.get(target - array[i]);
+      if(deter != null && deter == false){
+        res.add(Arrays.asList(target - array[i], array[i]));
+        map.put(target - array[i], true);
+        map.put(array[i], true);
+      }
+      Boolean deterCur = map.get(array[i]);
+      if(deterCur == null){
+        map.put(array[i], false);
+      }
+    }
+    return res;
+  }
+}

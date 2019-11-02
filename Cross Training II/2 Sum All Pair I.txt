@@ -1,0 +1,27 @@
+Find all pairs of elements in a given array that sum to the given target number. Return all the pairs of indices.
+
+// TC: O(n)
+// SC: O(n)
+public class Solution {
+  public List<List<Integer>> allPairs(int[] array, int target) {
+    List<List<Integer>> res = new ArrayList<>();
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    for(int i = 0; i < array.length; i++){  
+      List<Integer> partnerList = map.get(target - array[i]);
+      if(partnerList != null){
+        for(int index : partnerList){
+          res.add(Arrays.asList(index, i));
+        }
+      }
+      List<Integer> curList = map.get(array[i]);
+      if(curList == null){
+        map.put(array[i], new ArrayList<Integer>());
+        map.get(array[i]).add(i);
+      } else {
+        curList.add(i);
+      }
+      
+    }
+    return res;
+  }
+}
